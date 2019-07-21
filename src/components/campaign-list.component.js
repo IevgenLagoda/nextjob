@@ -4,11 +4,12 @@ import axios from 'axios';
 
 const Campaign = props => (
   <tr>
-    <td>Campaign Name</td>
+    <td>{props.campaign.name}</td>
     <td>Campaign Main Contact</td>
     <td>Status</td>
     <td>
-      <Link to="/edit/1">edit</Link> | <a href="#">delete</a>
+      <Link to={"/edit/" + props.campaign._id}>edit</Link> |
+      <a href="#" onClick={() => { props.deleteCampaign(props.campaign._id) }}>delete</a>
     </td>
   </tr>
 )
@@ -17,15 +18,26 @@ export default class CampaignList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {campaigns: []};
+    this.deleteCampaign = this.deleteCampaign.bind(this);
+
+    this.state = { campaigns: [] };
   }
 
   componentDidMount() {
-    // Call API
+    axios.get('http://localhost:5000/campaign/')
+      .then(response => {
+        this.setState({ campaigns: response.data })
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   deleteCampaign(id) {
-    // Call API
+    axios.delete('http://localhost:5000/campaign/' + id)
+      .then(response => {
+        console.log(response.data)
+      });
 
     this.setState({
       campaigns: this.state.campaigns.filter(el => el._id !== id)
@@ -34,7 +46,7 @@ export default class CampaignList extends Component {
 
   campaignsList() {
     return this.state.campaigns.map(currentCampaign => {
-      return <Campaign campaign={currentCampaign} deleteCampaigne={this.deleteCamapgin} />;
+      return <Campaign campaign={currentCampaign} deleteCampaign={this.deleteCampaign} />;
     })
   }
 
@@ -52,7 +64,7 @@ export default class CampaignList extends Component {
             </tr>
           </thead>
           <tbody>
-            { this.campaignsList() }
+            {this.campaignsList()}
           </tbody>
         </table>
       </div>

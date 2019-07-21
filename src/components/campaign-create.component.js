@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
+//import "react-datepicker/dist/react-datepicker.css";
 
 export default class CampaignCreate extends Component {
   constructor(props) {
@@ -16,7 +15,7 @@ export default class CampaignCreate extends Component {
   }
 
   componentDidMount() {
-    // API call
+    // API call - all related data, if needed.
   }
 
   onChangeName(e) {
@@ -32,7 +31,8 @@ export default class CampaignCreate extends Component {
       name: this.state.name,
     }
 
-    // API call
+    axios.post('http://localhost:5000/campaign/create', campaign)
+      .then(res => console.log(res.data));
 
     window.location = '/';
   }
