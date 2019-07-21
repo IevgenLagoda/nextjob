@@ -12,9 +12,6 @@ export default class Navbar extends Component {
           <li className="navbar-item">
           <Link to="/" className="nav-link">Campaigns</Link>
           </li>
-          <li className="navbar-item">
-          <Link to="/create" className="nav-link">Create Campaign</Link>
-          </li>
         </ul>
         </div>
       </nav>

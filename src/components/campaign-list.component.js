@@ -5,11 +5,20 @@ import axios from 'axios';
 const Campaign = props => (
   <tr>
     <td>{props.campaign.name}</td>
-    <td>Campaign Main Contact</td>
-    <td>Status</td>
+    <td>N/A</td>
+    <td>N/A</td>
     <td>
-      <Link to={"/edit/" + props.campaign._id}>edit</Link> |
-      <a href="#" onClick={() => { props.deleteCampaign(props.campaign._id) }}>delete</a>
+      <Link to={"/edit/" + props.campaign._id}>
+        <button class="btn btn-sm btn-info">
+          Edit
+        </button>
+      </Link>
+      &nbsp;
+      <button
+        class="btn btn-sm btn-danger"
+        onClick={() => { props.deleteCampaign(props.campaign._id) }}>
+        Delete
+      </button>
     </td>
   </tr>
 )
@@ -67,6 +76,13 @@ export default class CampaignList extends Component {
             {this.campaignsList()}
           </tbody>
         </table>
+        <div class="float-right">
+          <Link to={"/create/"}>
+            <button class="btn btn-primary">
+              Create new Campaign
+            </button>
+          </Link>
+        </div>
       </div>
     )
   }
