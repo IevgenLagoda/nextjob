@@ -1,11 +1,11 @@
 import React from 'react';
-import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route} from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import Navbar from "./components/navbar.component";
-import CampaignList from "./components/campaign-list.component";
-import CampaignEdit from "./components/campaign-edit.component";
-import CampaignCreate from "./components/campaign-create.component";
+import CompanyList from "./components/company/company-list.component";
+import CompanyEdit from "./components/company/company-edit.component";
+import CompanyCreate from "./components/company/company-create.component";
 
 function App() {
   return (
@@ -13,9 +13,9 @@ function App() {
       <div className="container">
       <Navbar />
       <br/>
-      <Route path="/" exact component={CampaignList} />
-      <Route path="/edit/:id" component={CampaignEdit} />
-      <Route path="/create" component={CampaignCreate} />
+      <Route path="/" exact component={CompanyList} />
+      <Route path="/conpany/edit/:id" component={CompanyEdit} />
+      <Route path="/company/create" component={CompanyCreate} />
       </div>
     </Router>
   );

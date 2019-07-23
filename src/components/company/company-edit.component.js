@@ -3,7 +3,7 @@ import axios from 'axios';
 // import DatePicker from 'react-datepicker';
 // import "react-datepicker/dist/react-datepicker.css";
 
-export default class CampaignEdit extends Component {
+export default class CompanyEdit extends Component {
   constructor(props) {
     super(props);
 
@@ -16,15 +16,13 @@ export default class CampaignEdit extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/campaign/' + this.props.match.params.id)
+    axios.get('http://localhost:5000/company/' + this.props.match.params.id)
       .then(response => {
         this.setState({
           name: response.data.name,
         })
       })
-      .catch(function (error) {
-        console.log(error);
-      })
+      .catch(error => console.log(error));
   }
 
   onChangeName(e) {
@@ -36,11 +34,11 @@ export default class CampaignEdit extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const campaign = {
+    const company = {
       name: this.state.name,
     }
 
-    axios.post('http://localhost:5000/campaign/update/' + this.props.match.params.id, campaign)
+    axios.post('http://localhost:5000/company/update/' + this.props.match.params.id, company)
       .then(res => console.log(res.data));
 
     window.location = '/';
@@ -49,7 +47,7 @@ export default class CampaignEdit extends Component {
   render() {
     return (
       <div>
-        <h3>Edit Campaign Record</h3>
+        <h3>Edit Company Record</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label>Name: </label>
@@ -62,7 +60,7 @@ export default class CampaignEdit extends Component {
           </div>
 
           <div className="form-group">
-            <input type="submit" value="Edit Exercise Log" className="btn btn-primary" />
+            <input type="submit" value="Edit Company Record" className="btn btn-primary" />
           </div>
         </form>
       </div>

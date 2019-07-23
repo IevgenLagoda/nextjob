@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 //import "react-datepicker/dist/react-datepicker.css";
 
-export default class CampaignCreate extends Component {
+export default class CompanyCreate extends Component {
   constructor(props) {
     super(props);
 
@@ -27,11 +27,11 @@ export default class CampaignCreate extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const campaign = {
+    const company = {
       name: this.state.name,
     }
 
-    axios.post('http://localhost:5000/campaign/create', campaign)
+    axios.post('http://localhost:5000/company/create', company)
       .then(res => console.log(res.data));
 
     window.location = '/';
@@ -40,7 +40,7 @@ export default class CampaignCreate extends Component {
   render() {
     return (
     <div>
-      <h3>Create New Campaign record</h3>
+      <h3>Create New Company record</h3>
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
           <label>Name: </label>
@@ -53,7 +53,7 @@ export default class CampaignCreate extends Component {
         </div>
 
         <div className="form-group">
-          <input type="submit" value="Create Campaign Record" className="btn btn-primary" />
+          <input type="submit" value="Create Company Record" className="btn btn-primary" />
         </div>
       </form>
     </div>
