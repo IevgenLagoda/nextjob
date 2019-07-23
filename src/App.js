@@ -14,7 +14,7 @@ function App() {
       <Navbar />
       <br/>
       <Route path="/" exact component={CompanyList} />
-      <Route path="/conpany/edit/:id" component={CompanyEdit} />
+      <Route path="/company/edit/:id" component={CompanyEdit} />
       <Route path="/company/create" component={CompanyCreate} />
       </div>
     </Router>

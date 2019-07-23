@@ -8,14 +8,14 @@ const Company = props => (
     <td>N/A</td>
     <td>N/A</td>
     <td>
-      <Link to={"/edit/" + props.company._id}>
-        <button class="btn btn-sm btn-info">
+      <Link to={"/company/edit/" + props.company._id}>
+        <button className="btn btn-sm btn-info">
           Edit
         </button>
       </Link>
       &nbsp;
       <button
-        class="btn btn-sm btn-danger"
+        className="btn btn-sm btn-danger"
         onClick={() => { props.deleteCompany(props.company._id) }}>
         Delete
       </button>
@@ -49,16 +49,16 @@ export default class CompanyList extends Component {
     })
   }
 
-  companiesList() {
+  companyList() {
     return this.state.companies.map(currentCompany => {
-      return <Company company={currentCompany} deleteCompany={this.deleteCompany} />;
+      return <Company company={currentCompany} deleteCompany={this.deleteCompany} key={currentCompany._id}/>;
     })
   }
 
   render() {
     return (
       <div>
-        <h3>companies</h3>
+        <h3>Companies</h3>
         <table className="table">
           <thead className="thead-light">
             <tr>
@@ -69,11 +69,11 @@ export default class CompanyList extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.companiesList()}
+            {this.companyList()}
           </tbody>
         </table>
         <div className="float-right">
-          <Link to={"/create/"}>
+          <Link to={"/company/create/"}>
             <button className="btn btn-primary">
               Create new Company Record
             </button>
