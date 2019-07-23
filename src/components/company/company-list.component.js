@@ -5,8 +5,18 @@ import axios from 'axios';
 const Company = props => (
   <tr>
     <td>{props.company.name}</td>
-    <td>N/A</td>
-    <td>N/A</td>
+    <td>
+      {props.company.url
+        ? <a href={props.company.url} target="_blank">Jobs</a>
+        : 'N/A'
+      }
+    </td>
+    <td>
+      {props.company.status
+        ? <span>{props.company.status}</span>
+        : 'N/A'
+      }
+    </td>
     <td>
       <Link to={"/company/edit/" + props.company._id}>
         <button className="btn btn-sm btn-info">
@@ -51,7 +61,7 @@ export default class CompanyList extends Component {
 
   companyList() {
     return this.state.companies.map(currentCompany => {
-      return <Company company={currentCompany} deleteCompany={this.deleteCompany} key={currentCompany._id}/>;
+      return <Company company={currentCompany} deleteCompany={this.deleteCompany} key={currentCompany._id} />;
     })
   }
 
@@ -63,7 +73,7 @@ export default class CompanyList extends Component {
           <thead className="thead-light">
             <tr>
               <th>Name</th>
-              <th>Main contact</th>
+              <th>Jobs URL</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -72,7 +82,7 @@ export default class CompanyList extends Component {
             {this.companyList()}
           </tbody>
         </table>
-        <div className="float-right">
+        <div>
           <Link to={"/company/create/"}>
             <button className="btn btn-primary">
               Create new Company Record
