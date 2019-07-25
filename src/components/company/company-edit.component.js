@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import CompanyModel from '../../model/company.model';
 // import DatePicker from 'react-datepicker';
 // import "react-datepicker/dist/react-datepicker.css";
 
@@ -11,63 +11,56 @@ export default class CompanyEdit extends Component {
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangeUrl = this.onChangeUrl.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
-    this.deleteCompany = this.deleteCompany.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      name: '',
-      url: '',
-      status: '',
+      model: {},
+      companyModel: new CompanyModel(this.props.match.params.id),
     }
   }
 
+  getInstance() {
+    return this;
+  }
+
   componentDidMount() {
-    axios.get('http://localhost:5000/company/' + this.props.match.params.id)
-      .then(response => {
+    this.state.companyModel.load()
+      .then(model => {
         this.setState({
-          name: response.data.name,
-          url: response.data.url,
-          status: response.data.status,
+          model: model
         })
       })
       .catch(error => console.log(error));
   }
 
   onChangeName(e) {
-    this.setState({
-      name: e.target.value
-    })
+    const model = this.getInstance().state.model;
+    model.name = e.target.value;
+    this.setState({model: model});
   }
 
   onChangeUrl(e) {
-    this.setState({
-      url: e.target.value
-    })
+    const model = this.getInstance().state.model;
+    model.url = e.target.value;
+    this.setState({model: model});
   }
 
   onChangeStatus(e) {
-    this.setState({
-      status: e.target.value
-    })
-  }
-
-  deleteCompany() {
-    axios.delete('http://localhost:5000/company/' + this.props.match.params.id)
-      .then(response => console.log(response.data));
-
-    window.location = '/';
+    const model = this.getInstance().state.model;
+    model.status = e.target.value;
+    this.setState({model: model});
   }
 
   onSubmit(e) {
     e.preventDefault();
 
     const company = {
-      name: this.state.name,
-      url: this.state.url,
-      status: this.state.status,
+      name: this.state.model.name,
+      url: this.state.model.url,
+      status: this.state.model.status,
     }
 
-    axios.post('http://localhost:5000/company/update/' + this.props.match.params.id, company)
+    this.state.companyModel.save(this.props.match.params.id, company)
       .then(res => console.log(res.data));
 
     window.location = '/';
@@ -89,7 +82,7 @@ export default class CompanyEdit extends Component {
             <input type="text"
               required
               className="form-control"
-              value={this.state.name}
+              value={this.state.model.name}
               onChange={this.onChangeName}
             />
           </div>
@@ -97,7 +90,7 @@ export default class CompanyEdit extends Component {
             <label>Jobs URL (LinkedIn or another page with jobs listing): </label>
             <input type="url"
               className="form-control"
-              value={this.state.url}
+              value={this.state.model.url}
               onChange={this.onChangeUrl}
             />
           </div>
@@ -105,20 +98,20 @@ export default class CompanyEdit extends Component {
             <label>Status:</label>
             <select ref="statusInput"
               className="form-control"
-              value={this.state.status}
+              value={this.state.model.status}
               onChange={this.onChangeStatus}>
               {options.map(option =>
-                <option value={option} selected={this.state.status == option}>{option}</option>
+                <option value={option} selected={this.state.model.status == option}>{option}</option>
               )}
             </select>
           </div>
 
           <div>
-            <input type="submit" value="Edit Company Record" className="btn btn-primary" />
+            <input type="submit" value="Save Company Record" className="btn btn-primary" />
             &nbsp;
             <button
               className="btn btn-danger"
-              onClick={() => { this.deleteCompany() }}>
+              onClick={() => { this.state.companyModel.delete() }}>
               Delete
             </button>
             &nbsp;

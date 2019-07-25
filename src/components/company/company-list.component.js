@@ -1,87 +1,44 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-
-const Company = props => (
-  <tr>
-    <td>{props.company.name}</td>
-    <td>
-      {props.company.url
-        ? <a href={props.company.url} target="_blank">Jobs</a>
-        : 'N/A'
-      }
-    </td>
-    <td>
-      {props.company.status
-        ? <span>{props.company.status}</span>
-        : 'N/A'
-      }
-    </td>
-    <td>
-      <Link to={"/company/edit/" + props.company._id}>
-        <button className="btn btn-sm btn-info">
-          Edit
-        </button>
-      </Link>
-      &nbsp;
-      <button
-        className="btn btn-sm btn-danger"
-        onClick={() => { props.deleteCompany(props.company._id) }}>
-        Delete
-      </button>
-    </td>
-  </tr>
-)
+import CompanyModel from '../../model/company.model';
 
 export default class CompanyList extends Component {
   constructor(props) {
     super(props);
 
-    this.deleteCompany = this.deleteCompany.bind(this);
-
-    this.state = { companies: [] };
+    this.state = {
+      companyModel: new CompanyModel(),
+      companies: [],
+    };
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/company/')
-      .then(response => {
-        this.setState({ companies: response.data })
+    this.state.companyModel.loadAll()
+      .then(companies => {
+        this.setState({ companies: companies })
       })
       .catch(error => console.log(error));
-  }
-
-  deleteCompany(id) {
-    axios.delete('http://localhost:5000/company/' + id)
-      .then(response => console.log(response.data));
-
-    this.setState({
-      companies: this.state.companies.filter(el => el._id !== id)
-    })
-  }
-
-  companyList() {
-    return this.state.companies.map(currentCompany => {
-      return <Company company={currentCompany} deleteCompany={this.deleteCompany} key={currentCompany._id} />;
-    })
   }
 
   render() {
     return (
       <div>
         <h3>Companies</h3>
+        {(this.state.companies.length > 0) ? (
         <table className="table">
           <thead className="thead-light">
-            <tr>
-              <th>Name</th>
-              <th>Jobs URL</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
+            {this.state.companyModel.getTableHeader()}
           </thead>
           <tbody>
-            {this.companyList()}
+          {
+            this.state.companies.map(currentCompany =>
+              this.state.companyModel.getTableRow(currentCompany))
+          }
           </tbody>
         </table>
+        ) : (
+        <div>No companies so far...</div>
+        )}
         <div>
           <Link to={"/company/create/"}>
             <button className="btn btn-primary">
