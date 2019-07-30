@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import CompanyModel from "../../model/company.model";
-import InterviewModel from "../../model/interview.model";
 
 export default class CompanyView extends Component {
   constructor(props) {
@@ -9,9 +8,7 @@ export default class CompanyView extends Component {
 
     this.state = {
       model: {},
-      interviews: [],
-      companyModel: new CompanyModel(this.props.match.params.id),
-      interviewModel: new InterviewModel(null, this.props.match.params.id),
+      companyModel: new CompanyModel(this.props.match.params.id)
     };
   }
 
@@ -20,10 +17,6 @@ export default class CompanyView extends Component {
       .load()
       .then(model => this.setState({ model: model }))
       .catch(error => console.log(error));
-    this.state.interviewModel
-      .loadByCampaignId(this.props.match.params.id)
-      .then(list => this.setState({ interviews: list }))
-      .catch(error => console.log(error));      
   }
 
   render() {
@@ -48,9 +41,9 @@ export default class CompanyView extends Component {
         <h6>Interviews</h6>
         <table className="table">
           <thead className="thead-light">
-            {this.state.interviewModel.getTableHeader()}
+            {this.state.companyModel.getTableHeader()}
           </thead>
-          
+          <tbody>{this.state.companyModel.getTableRow(this.state.model)}</tbody>
         </table>
 
         <div />
