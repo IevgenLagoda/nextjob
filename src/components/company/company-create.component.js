@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import CompanyModel from "../../model/company.model";
 //import "react-datepicker/dist/react-datepicker.css";
 
 export default class CompanyCreate extends Component {
@@ -13,92 +14,110 @@ export default class CompanyCreate extends Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      name: '',
-      url: '',
-      status: '',
-    }
+      model: {},
+      companyModel: new CompanyModel()
+    };
   }
 
   componentDidMount() {
     // API call - all related data, if needed.
   }
 
-  onChangeName(e) {
+  onChangeName = (e) => {
+    const model = this.state.model;
+    model.name = e.target.value
     this.setState({
-      name: e.target.value
-    })
+      model: model
+    });
   }
 
-  onChangeUrl(e) {
+  onChangeUrl = (e) => {
+    const model = this.state.model;
+    model.url = e.target.value
     this.setState({
-      url: e.target.value
-    })
+      model: model
+    });
   }
 
-  onChangeStatus(e) {
+  onChangeStatus = (e) => {
+    const model = this.state.model;
+    model.status = e.target.value
     this.setState({
-      status: e.target.value
-    })
+      model: model
+    });
   }
 
   onSubmit(e) {
     e.preventDefault();
 
-    const company = {
-      name: this.state.name,
-      url: this.state.url,
-      status: this.state.status,
-    }
-
-    axios.post('http://localhost:5000/company/create', company)
+    axios
+      .post("http://localhost:5000/company/create", this.state.model)
       .then(res => console.log(res.data));
 
-    window.location = '/';
+    window.location = "/";
   }
 
   render() {
+    // TODO: 1st options doesn't save by default.
+    const statuses = this.state.companyModel.getStatusList();
     return (
       <div>
         <h3>Create New Company record</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label>Name: </label>
-            <input type="text"
+            <input
+              type="text"
               required
               className="form-control"
-              value={this.state.name}
+              value={this.state.model.name}
               onChange={this.onChangeName}
             />
           </div>
           <div className="form-group">
-            <label>Jobs URL (LinkedIn or another page with jobs listing): </label>
-            <input type="url"
+            <label>
+              Jobs URL (LinkedIn or another page with jobs listing):{" "}
+            </label>
+            <input
+              type="url"
               className="form-control"
-              value={this.state.url}
+              value={this.state.model.url}
               onChange={this.onChangeUrl}
             />
           </div>
           <div className="form-group">
             <label>Status: </label>
-            <select ref="statusInput"
+            <select
               className="form-control"
-              value={this.state.status}
-              onChange={this.onChangeStatus}>
-              <option value="Planned">Planned</option>
-              <option value="In Work">In Work</option>
-              <option value="Postponed">Postponed</option>
+              defaultValue={{ label: statuses[0], value: statuses[0] }}
+              onChange={this.onChangeStatus}
+            >
+            {statuses.map(option => (
+              <option
+                key={option}  
+                value={option}
+              >
+                {option}
+              </option>
+            ))}
             </select>
           </div>
 
           <div>
-            <input type="submit" value="Create Company Record" className="btn btn-primary" />
+            <input
+              type="submit"
+              value="Create Company Record"
+              className="btn btn-primary"
+            />
             &nbsp;
             <Link to="/">
-              <button type="button" className="btn btn-secondary">Cancel</button>
+              <button type="button" className="btn btn-secondary">
+                Cancel
+              </button>
             </Link>
           </div>
         </form>
       </div>
-    )
+    );
   }
 }

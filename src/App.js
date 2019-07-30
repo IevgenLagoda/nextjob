@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Route} from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Navbar from "./components/navbar.component";
@@ -12,12 +12,12 @@ function App() {
   return (
     <Router>
       <div className="container">
-      <Navbar />
-      <br/>
-      <Route path="/" exact component={CompanyList} />
-      <Route path="/company/view/:id" component={CompanyView} />
-      <Route path="/company/edit/:id" component={CompanyEdit} />
-      <Route path="/company/create" component={CompanyCreate} />
+        <Navbar />
+        <br />
+        <Route path="/" exact component={CompanyList} />
+        <Route path="/company/view/:id" component={CompanyView} />
+        <Route path="/company/edit/:id" component={CompanyEdit} />
+        <Route path="/company/create" component={CompanyCreate} />
       </div>
     </Router>
   );
