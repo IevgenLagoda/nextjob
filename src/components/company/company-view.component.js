@@ -21,8 +21,8 @@ export default class CompanyView extends Component {
       .then(model => this.setState({ model: model }))
       .catch(error => console.log(error));
     this.state.interviewModel
-      .loadByCampaignId(this.props.match.params.id)
-      .then(list => this.setState({ interviews: list }))
+      .loadByCompanyId(this.props.match.params.id)
+      .then(list => this.setState({ interviews: list || [] }))
       .catch(error => console.log(error));      
   }
 
@@ -46,13 +46,27 @@ export default class CompanyView extends Component {
           <tbody>{this.state.companyModel.getTableRow(this.state.model)}</tbody>
         </table>
         <h6>Interviews</h6>
+        {this.state.interviews.length > 0 ? (
         <table className="table">
           <thead className="thead-light">
             {this.state.interviewModel.getTableHeader()}
           </thead>
-          
+          <tbody>
+          {this.state.interviews.map(currentInterview =>
+            this.state.interviewModel.getTableRow(currentInterview)
+          )}
+          </tbody>
         </table>
-
+        ) : (
+          <div>No interviews so far...</div>
+        )}
+        <div>
+        <Link to={"/interview/create/"}>
+          <button className="btn btn-primary">
+            Create new Interview Record
+          </button>
+        </Link>
+      </div>
         <div />
       </div>
     );

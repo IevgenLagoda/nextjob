@@ -33,8 +33,8 @@ export default class CompanyModel {
     });
   }
 
-  loadByCampaignId(campaignId) {
-    return axios.get(`${this.url}/interview/byCampaign/${campaignId}`).then(response => {
+  loadByCompanyId(companyId) {
+    return axios.get(`${this.url}/interview/company/${companyId}`).then(response => {
       return response.data;
     });
   }
